@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="ejobs_position_tree" model="ir.ui.view">
+            <field name="name">ejobs.positions.tree</field>
+            <field name="model">ejobs.positions</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="department_id"/>
+                    <field name="no_of_recruitment"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="ejobs_position_form" model="ir.ui.view">
+            <field name="name">ejobs.positions.form</field>
+            <field name="model">ejobs.positions</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. Sales Manager"/>
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page string="Job Description">
+                                <div>
+                                    <label for="description"/>
+                                    <field name="description"/>
+                                </div>
+                            </page>
+                            <page string="Recruitment">
+                                <group>
+                                    <group name="recruitment">
+                                        <field name="company_id"/>
+                                        <field name="department_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="no_of_recruitment"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="ejobs_position_search" model="ir.ui.view">
+            <field name="name">ejobs.positions.search</field>
+            <field name="model">ejobs.positions</field>
+            <field name="arch" type="xml">
+                <search string="Job positions">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="department_id"/>
+                    <field name="no_of_recruitment"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="ejobs_position_kanban" model="ir.ui.view">
+            <field name="name">ejobs.positions.kanban</field>
+            <field name="model">ejobs.positions</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="department_id"/>
+                    <field name="no_of_recruitment"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <h1 class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </h1>
+                                    <ul>
+                                        <li>Department :
+                                            <field name="department_id"/>
+                                        </li>
+                                        <li>No. of recruitment :
+                                            <field name="no_of_recruitment"/>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+    </data>
+</odoo>
