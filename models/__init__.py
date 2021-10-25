@@ -1,1 +1,1 @@
-from . import jobPosition
+from . import job_position
