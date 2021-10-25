@@ -42,6 +42,7 @@
                                         <field name="department_id"/>
                                     </group>
                                     <group>
+                                        <field name="recruiter_id"/>
                                         <field name="no_of_recruitment"/>
                                     </group>
                                 </group>
@@ -74,27 +75,48 @@
             <field name="name">ejobs.positions.kanban</field>
             <field name="model">ejobs.positions</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="">
+                <kanban class="oe_background_grey o_kanban_dashboard o_hr_recruitment_kanban">
                     <field name="name"/>
                     <field name="company_id"/>
                     <field name="department_id"/>
                     <field name="no_of_recruitment"/>
+                    <field name="color"/>
+                    <field name="is_favorite"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_global_click">
-                                <div class="oe_kanban_details">
-                                    <h1 class="o_kanban_record_title">
-                                        <field name="name"/>
-                                    </h1>
-                                    <ul>
-                                        <li>Department :
-                                            <field name="department_id"/>
-                                        </li>
-                                        <li>No. of recruitment :
-                                            <field name="no_of_recruitment"/>
-                                        </li>
-
-                                    </ul>
+                            <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
+                                <div class="o_kanban_card_header oe_kanban_global_click">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary col-12">
+                                            <span>
+                                                <t t-esc="record.name.value"/>
+                                            </span>
+                                        </div>
+                                        <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
+                                    </div>
+                                    <div class="oe_kanban_details">
+                                        <ul>
+                                            <li>Department :
+                                                <field name="department_id"/>
+                                            </li>
+                                            <li>No. of position :
+                                                <field name="no_of_recruitment"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="o_kanban_manage_button_section">
+                                        <a class="o_kanban_manage_toggle_button" href="#">
+                                            <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                    <div role="menuitem">
+                                        <a t-if="widget.editable" name="edit_job" type="edit">Edit</a>
+                                    </div>
+                                    <div role="menuitem" aria-haspopup="true">
+                                        <ul class="oe_kanban_colorpicker" data-field="color" role="menu"/>
+                                    </div>
                                 </div>
                             </div>
                         </t>
