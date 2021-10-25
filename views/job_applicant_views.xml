@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- Applicants tree view -->
+        <record id="job_applicants_view_tree" model="ir.ui.view">
+            <field name="name">Applicants</field>
+            <field name="model">ejobs.applicants</field>
+            <field name="arch" type="xml">
+                <tree string="Applicants" multi_edit="1" sample="1">
+                    <field name="name" readonly="1"/>
+                    <field name="application_date" readonly="1" widget="date" optional="show"/>
+                    <field name="applicant_name" readonly="1"/>
+                    <field name="applicant_mobile" widget="phone" readonly="1" optional="show"/>
+                    <field name="applicant_email" readonly="1" optional="hide"/>
+                    <field name="job_position_id"/>
+                    <field name="priority" widget="priority" optional="show"/>
+                    <field name="medium_id" optional="hide"/>
+                    <field name="salary_expected" optional="hide"/>
+                    <field name="salary_proposed" optional="hide"/>
+                    <field name="applicant_degree" invisible="1"/>
+                    <field name="availability" optional="hide"/>
+                    <field name="department_id" readonly="1"/>
+                    <field name="employee_id" optional="show"/>
+                    <field name="stage_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Applicants from view -->
+        <record id="job_applicants_view_form" model="ir.ui.view">
+            <field name="name">Job Recruitment Form</field>
+            <field name="model">ejobs.applicants</field>
+            <field name="arch" type="xml">
+                <form string="Job Recruitment Form" class="o_applicant_form">
+                    <sheet>
+                        <field name="kanban_state" widget="kanban_state_selection"/>
+                        <field name="active" invisible="1"/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                            <h2 class="o_row">
+                                <div>
+                                    <label for="applicant_name" class="oe_edit_only"/>
+                                    <field name="applicant_name"/>
+                                </div>
+                            </h2>
+                        </div>
+                        <group string="Applicants Information">
+                            <group>
+                                <field name="applicant_email" widget="email"/>
+                                <field name="applicant_mobile" widget="phone"/>
+                                <field name="applicant_degree"/>
+                            </group>
+                            <group>
+                                <field name="recruiter_id"/>
+                                <field name="priority" widget="priority"/>
+                                <field name="medium_id"/>
+                            </group>
+                            <group string="Job info">
+                                <field name="job_position_id"/>
+                                <field name="department_id"/>
+                                <field name="company_id"/>
+                            </group>
+                            <group string="Contract">
+                                <label for="salary_expected"/>
+                                <div class="o_row">
+                                    <field name="salary_expected"/>
+                                </div>
+                                <label for="salary_proposed"/>
+                                <div class="o_row">
+                                    <field name="salary_proposed"/>
+                                </div>
+                                <field name="availability"/>
+                                <field name="employee_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <separator string="Application Summary"/>
+                        <field name="description" placeholder="Feedback of interviews..."/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids" options="{'open_attachments': True}"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

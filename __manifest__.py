@@ -18,8 +18,10 @@
     'depends': ['base', 'mail'],
     'data': [
         'security/ir.model.access.csv',
+        'data/application_sequence.xml',
         'views/all_munu_items.xml',
         'views/job_position_views.xml',
+        'views/job_applicant_views.xml',
     ],
     'demo': [
         # 'demo/demo.xml',
