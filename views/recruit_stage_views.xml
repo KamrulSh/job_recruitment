@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Stage Tree View -->
+        <record id="job_recruitment_stage_tree" model="ir.ui.view">
+            <field name="name">ejobs.recruitment.stage.tree</field>
+            <field name="model">ejobs.recruitment.stage</field>
+            <field name="arch" type="xml">
+                <tree string="Stages">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Stage Kanban View -->
+        <record id="job_recruitment_stage_kanban" model="ir.ui.view">
+            <field name="name">ejobs.recruitment.stage.kanban</field>
+            <field name="model">ejobs.recruitment.stage</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Stage Form View -->
+        <record id="job_recruitment_stage_form" model="ir.ui.view">
+            <field name="name">ejobs.recruitment.stage.form</field>
+            <field name="model">ejobs.recruitment.stage</field>
+            <field name="arch" type="xml">
+                <form string="Stage">
+                    <sheet>
+                        <group name="stage_definition" string="Stage Definition">
+                            <field name="name"/>
+                            <field name="sequence" groups=""/>
+                            <field name="template_id" domain="[('model_id.model', '=', 'ejobs.applicants')]"/>
+                        </group>
+                        <group name="tooltips" string="Tooltips">
+                            <p class="text-muted" colspan="2">
+                                You can define here the labels that will be displayed for the kanban state instead
+                                of the default labels.
+                            </p>
+                            <label for="legend_normal" string=" " class="o_status"/>
+                            <field name="legend_normal" nolabel="1"/>
+                            <label for="legend_blocked" string=" " class="o_status o_status_red"/>
+                            <field name="legend_blocked" nolabel="1"/>
+                            <label for="legend_done" string=" " class="o_status o_status_green"/>
+                            <field name="legend_done" nolabel="1"/>
+                        </group>
+                        <separator string="Requirements"/>
+                        <field name="requirements"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Stage Action -->
+        <record id="job_recruitment_stage_action" model="ir.actions.act_window">
+            <field name="name">Stages</field>
+            <field name="res_model">ejobs.recruitment.stage</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="job_recruitment_stage_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new stage in the recruitment process
+                </p>
+                <p>
+                    Don't forget to specify the department if your recruitment process
+                    is different according to the job position.
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+                id="menu_job_recruitment_configuration"
+                name="Configuration"
+                parent="job_recruitment_root"/>
+
+        <menuitem
+                id="menu_job_recruitment_stage"
+                name="Stages"
+                parent="menu_job_recruitment_configuration"
+                action="job_recruitment_stage_action"
+                sequence="4"/>
+    </data>
+</odoo>

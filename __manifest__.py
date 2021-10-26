@@ -22,6 +22,7 @@
         'views/all_munu_items.xml',
         'views/job_position_views.xml',
         'views/job_applicant_views.xml',
+        'views/recruit_stage_views.xml',
     ],
     'demo': [
         # 'demo/demo.xml',
