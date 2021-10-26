@@ -15,3 +15,5 @@ class JobPositions(models.Model):
     no_of_recruitment = fields.Integer(string='No. of recruitment', tracking=True)
     is_favorite = fields.Boolean(tracking=True)
     color = fields.Integer("Color Index")
+    date_open = fields.Datetime("Job Assigning date", readonly=False, index=True)
+    date_closed = fields.Datetime("Job Closing date", store=True, index=True)

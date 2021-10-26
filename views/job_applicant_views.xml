@@ -68,7 +68,6 @@
                                 <field name="department_id"/>
                                 <field name="company_id"/>
                                 <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-
                             </group>
                             <group string="Contract">
                                 <label for="salary_expected"/>
@@ -187,6 +186,51 @@
                 </kanban>
             </field>
         </record>
+
+        <!-- Applicants activity view -->
+        <record id="job_applicants_view_activity" model="ir.ui.view">
+            <field name="name">ejobs.applicants.activity</field>
+            <field name="model">ejobs.applicants</field>
+            <field name="arch" type="xml">
+                <activity string="Applicants">
+                    <templates>
+                        <div t-name="activity-box">
+                            <div>
+                                <field name="name" display="full"/>
+                                <field name="applicant_name" muted="1" display="full"/>
+                            </div>
+                        </div>
+                    </templates>
+                </activity>
+            </field>
+        </record>
+        <!-- Applicants pivot view -->
+        <record id="job_applicants_pivot_view" model="ir.ui.view">
+            <field name="name">Jobs - Recruitment</field>
+            <field name="model">ejobs.applicants</field>
+            <field name="arch" type="xml">
+                <pivot string="Job Applications" sample="1">
+                    <field name="applicant_name" type="row"/>
+                    <field name="stage_id" type="col"/>
+                    <field name="color" invisible="1"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Applicants calender view -->
+        <!--        <record id="job_applicants_calendar_view" model="ir.ui.view">-->
+        <!--            <field name="name">Hr Applicants Calendar</field>-->
+        <!--            <field name="model">ejobs.applicants</field>-->
+        <!--            <field name="priority" eval="2"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <calendar string="Applicants" date_start="application_date" date_stop="application_date"-->
+        <!--                      event_open_popup="true" mode="month" color="name" quick_add="False">-->
+        <!--                    <field name="applicant_name"/>-->
+        <!--                    <field name="job_position_id"/>-->
+        <!--                    <field name="priority" widget="priority"/>-->
+        <!--                </calendar>-->
+        <!--            </field>-->
+        <!--        </record>-->
 
     </data>
 </odoo>

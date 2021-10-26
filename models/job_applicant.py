@@ -35,9 +35,7 @@ class JobApplicant(models.Model):
                                     readonly=False, tracking=True)
     job_position_id = fields.Many2one('ejobs.positions', "Applied Job", tracking=True, required=True)
     job_ids = fields.Many2many('ejobs.positions', string='Job Specific')
-    date_open = fields.Datetime("Assigning date", readonly=True, index=True)
     application_date = fields.Datetime("Application Date", readonly=True, index=True, default=fields.Datetime.now())
-    date_closed = fields.Datetime("Closing date", store=True, index=True)
     priority = fields.Selection(AVAILABLE_PRIORITIES, "Priority", default='0')
     salary_proposed = fields.Float("Proposed Salary", tracking=True)
     salary_expected = fields.Float("Expected Salary", tracking=True)
@@ -100,6 +98,13 @@ class JobApplicant(models.Model):
                     applicant.stage_id = stage_ids[0] if stage_ids else False
             else:
                 applicant.stage_id = False
+
+    # compute date based on job_position_id
+    # @api.depends('job_position_id')
+    # def _compute_date(self):
+    #     for date in self:
+    #         date.date_open = date.job_position_id.date_open.id
+    #         date.date_closed = date.job_position_id.date_closed.id
 
 
 # added category for tag name

@@ -44,6 +44,8 @@
                                     <group>
                                         <field name="recruiter_id"/>
                                         <field name="no_of_recruitment"/>
+                                        <field name="date_open"/>
+                                        <field name="date_closed"/>
                                     </group>
                                 </group>
                             </page>
