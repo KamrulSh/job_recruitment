@@ -25,9 +25,10 @@ class JobApplicant(models.Model):
         ('phd', 'PhD')], string='Highest degree',
         copy=False, default='bsc', required=True)
     stage_id = fields.Char('Stage', tracking=True, store=True, readonly=False)
-    company_id = fields.Many2one('res.company', "Company", store=True, readonly=False, tracking=True)
-    recruiter_id = fields.Many2one('res.users', string='Recruiter', tracking=True)
-    department_id = fields.Many2one('hr.department', "Department", store=True, readonly=False, tracking=True)
+    company_id = fields.Many2one('res.company', "Company", compute='_compute_company', store=True, tracking=True)
+    recruiter_id = fields.Many2one('res.users', string='Recruiter', compute='_compute_recruiter', readonly=False, tracking=True)
+    department_id = fields.Many2one('hr.department', "Department", compute='_compute_department', store=True,
+                                    readonly=False, tracking=True)
     job_position_id = fields.Many2one('ejobs.positions', "Applied Job", tracking=True, required=True)
     date_open = fields.Datetime("Assigning date", readonly=True, index=True)
     application_date = fields.Datetime("Application Date", readonly=True, index=True, default=fields.Datetime.now())
@@ -37,12 +38,10 @@ class JobApplicant(models.Model):
     salary_expected = fields.Float("Expected Salary", tracking=True)
     availability = fields.Date("Availability", tracking=True, required=True)
     color = fields.Integer("Color Index", default=0)
-    employee_id = fields.Many2one('hr.employee', string="Employee", help="Employee linked to the applicant.")
-    employee_name = fields.Char(related='employee_id.name', string="Employee Name", readonly=False, tracking=True)
     kanban_state = fields.Selection([
-        ('normal', 'Grey'),
-        ('done', 'Green'),
-        ('blocked', 'Red')], string='Kanban State',
+        ('normal', 'In progress'),
+        ('done', 'Ready for next stage'),
+        ('blocked', 'Blocked')], string='Kanban State',
         copy=False, default='normal', required=True)
     medium_find = fields.Selection([
         ('fb', 'Facebook'),
@@ -57,3 +56,18 @@ class JobApplicant(models.Model):
 
         res = super(JobApplicant, self).create(vals)
         return res
+
+    @api.depends('job_position_id')
+    def _compute_department(self):
+        for applicant in self:
+            applicant.department_id = applicant.job_position_id.department_id.id
+
+    @api.depends('job_position_id')
+    def _compute_company(self):
+        for applicant in self:
+            applicant.company_id = applicant.job_position_id.company_id.id
+
+    @api.depends('job_position_id')
+    def _compute_recruiter(self):
+        for applicant in self:
+            applicant.recruiter_id = applicant.job_position_id.recruiter_id.id

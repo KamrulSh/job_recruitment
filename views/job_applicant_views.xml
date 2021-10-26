@@ -8,19 +8,19 @@
             <field name="arch" type="xml">
                 <tree string="Applicants" multi_edit="1" sample="1">
                     <field name="name" readonly="1"/>
+                    <field name="kanban_state" widget="kanban_state_selection" readonly="1"/>
                     <field name="application_date" readonly="1" widget="date" optional="show"/>
                     <field name="applicant_name" readonly="1"/>
                     <field name="applicant_mobile" widget="phone" readonly="1" optional="show"/>
                     <field name="applicant_email" readonly="1" optional="hide"/>
                     <field name="job_position_id"/>
                     <field name="priority" widget="priority" optional="show"/>
-                    <field name="medium_id" optional="hide"/>
+                    <field name="medium_find" optional="hide"/>
                     <field name="salary_expected" optional="hide"/>
                     <field name="salary_proposed" optional="hide"/>
                     <field name="applicant_degree" invisible="1"/>
                     <field name="availability" optional="hide"/>
                     <field name="department_id" readonly="1"/>
-                    <field name="employee_id" optional="show"/>
                     <field name="stage_id"/>
                 </tree>
             </field>
@@ -56,7 +56,7 @@
                             <group>
                                 <field name="recruiter_id"/>
                                 <field name="priority" widget="priority"/>
-                                <field name="medium_id"/>
+                                <field name="medium_find"/>
                             </group>
                             <group string="Job info">
                                 <field name="job_position_id"/>
@@ -73,7 +73,6 @@
                                     <field name="salary_proposed"/>
                                 </div>
                                 <field name="availability"/>
-                                <field name="employee_id" invisible="1"/>
                             </group>
                         </group>
                         <separator string="Application Summary"/>
