@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tag Form View -->
+        <record id="job_applicants_category_view_form" model="ir.ui.view">
+            <field name="name">ejobs.applicants.category.form</field>
+            <field name="model">ejobs.applicants.category</field>
+            <field name="arch" type="xml">
+                <form string="Tags">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="color"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tag Tree View -->
+        <record id="job_applicants_category_view_tree" model="ir.ui.view">
+            <field name="name">ejobs.applicants.category.tree</field>
+            <field name="model">ejobs.applicants.category</field>
+            <field name="arch" type="xml">
+                <tree string="Tags" editable="bottom">
+                    <field name="name"/>
+                    <field name="color"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Tag Action -->
+        <record id="job_applicants_tags_action" model="ir.actions.act_window">
+            <field name="name">Tags</field>
+            <field name="res_model">ejobs.applicants.category</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="job_applicants_category_view_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new tag
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+                id="menu_job_applicants_tags"
+                name="Tags"
+                parent="menu_job_recruitment_configuration"
+                action="job_applicants_tags_action"/>
+    </data>
+</odoo>

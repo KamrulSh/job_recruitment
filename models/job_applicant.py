@@ -1,3 +1,5 @@
+from random import randint
+
 from odoo import models, fields, api, _, SUPERUSER_ID
 
 AVAILABLE_PRIORITIES = [
@@ -25,7 +27,7 @@ class JobApplicant(models.Model):
         ('phd', 'PhD')], string='Highest degree',
         copy=False, default='bsc', required=True)
     stage_id = fields.Many2one('ejobs.recruitment.stage', 'Stage', tracking=True, store=True, readonly=False,
-                               group_expand='_read_group_stage_ids')
+                               group_expand='_read_group_stage_ids', compute='_compute_stage')
     company_id = fields.Many2one('res.company', "Company", compute='_compute_company', store=True, tracking=True)
     recruiter_id = fields.Many2one('res.users', string='Recruiter', compute='_compute_recruiter', readonly=False,
                                    tracking=True)
@@ -54,6 +56,7 @@ class JobApplicant(models.Model):
     legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked')
     legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid')
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing')
+    category_ids = fields.Many2many('ejobs.applicants.category', string="Tags")
 
     @api.model
     def create(self, vals):
@@ -86,3 +89,30 @@ class JobApplicant(models.Model):
     def _read_group_stage_ids(self, stages, domain, order):
         stage_ids = self.env['ejobs.recruitment.stage'].search([])
         return stage_ids
+
+    # compute stage for the applicant : default (Initial Qualification)
+    @api.depends('job_position_id')
+    def _compute_stage(self):
+        for applicant in self:
+            if applicant.job_position_id:
+                if not applicant.stage_id:
+                    stage_ids = self.env['ejobs.recruitment.stage'].search([], order='sequence asc', limit=1).ids
+                    applicant.stage_id = stage_ids[0] if stage_ids else False
+            else:
+                applicant.stage_id = False
+
+
+# added category for tag name
+class JobApplicantCategory(models.Model):
+    _name = "ejobs.applicants.category"
+    _description = "Category of applicant"
+
+    def _get_default_color(self):
+        return randint(1, 11)
+
+    name = fields.Char("Tag Name", required=True)
+    color = fields.Integer(string='Color Index', default=_get_default_color)
+
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', "Tag name already exists !"),
+    ]

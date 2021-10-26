@@ -94,8 +94,8 @@
                                         </div>
                                         <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
                                     </div>
-                                    <div class="oe_kanban_details">
-                                        <ul>
+                                    <div class="o_kanban_record_subtitle">
+                                         <ul>
                                             <li>Department :
                                                 <field name="department_id"/>
                                             </li>

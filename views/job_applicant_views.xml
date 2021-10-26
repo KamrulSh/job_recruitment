@@ -67,6 +67,8 @@
                                 <field name="job_position_id"/>
                                 <field name="department_id"/>
                                 <field name="company_id"/>
+                                <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
                             </group>
                             <group string="Contract">
                                 <label for="salary_expected"/>
@@ -151,7 +153,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--<field name="categ_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>-->
+                                    <field name="category_ids" widget="many2many_tags"
+                                           options="{'color_field': 'color'}"/>
                                     <t t-if="record.applicant_mobile.raw_value">
                                         <i class="fa fa-mobile mr4" role="img" aria-label="Mobile" title="Mobile"/>
                                         <field name="applicant_mobile" widget="phone"/>
