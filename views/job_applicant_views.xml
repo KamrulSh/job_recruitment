@@ -32,6 +32,11 @@
             <field name="model">ejobs.applicants</field>
             <field name="arch" type="xml">
                 <form string="Job Recruitment Form" class="o_applicant_form">
+                    <header>
+                        <!-- Show all stages in statusbar -->
+                        <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"
+                               attrs="{'invisible': [('active', '=', False)]}"/>
+                    </header>
                     <sheet>
                         <field name="kanban_state" widget="kanban_state_selection"/>
                         <field name="active" invisible="1"/>
@@ -84,6 +89,99 @@
                         <field name="message_ids" options="{'open_attachments': True}"/>
                     </div>
                 </form>
+            </field>
+        </record>
+
+        <!-- Applicants kanban view -->
+        <record id="job_applicants_view_kanban" model="ir.ui.view">
+            <field name="name">Applicants kanban</field>
+            <field name="model">ejobs.applicants</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="stage_id" class="o_kanban_applicant"
+                        quick_create_view="hr_recruitment.quick_create_applicant_form" sample="1">
+                    <field name="stage_id" options='{"group_by_tooltip": {"requirements": "Requirements"}}'/>
+                    <field name="name"/>
+                    <field name="color"/>
+                    <field name="priority"/>
+                    <field name="applicant_name"/>
+                    <field name="applicant_email"/>
+                    <field name="applicant_degree"/>
+                    <field name="kanban_state"/>
+                    <field name="recruiter_id"/>
+                    <field name="job_position_id"/>
+                    <field name="department_id"/>
+                    <field name="active"/>
+                    <field name="activity_ids"/>
+                    <field name="activity_state"/>
+                    <progressbar field="activity_state"
+                                 colors='{"planned": "success", "overdue": "danger", "today": "warning"}'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click oe_applicant_kanban oe_semantic_html_override">
+                                <span class="badge badge-pill badge-danger pull-right mr-4"
+                                      attrs="{'invisible': [('active', '=', True)]}">Refused
+                                </span>
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown"
+                                       href="#" aria-label="Dropdown menu" title="Dropdown menu" data-display="static">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t t-if="widget.editable">
+                                            <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                        </t>
+                                        <div role="separator" class="dropdown-divider"/>
+                                        <ul class="oe_kanban_colorpicker text-center" data-field="color"/>
+                                    </div>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <div class="o_kanban_record_title">
+                                                <t t-esc="record.name.value"/>
+                                            </div>
+                                            <br/>
+                                            <b class="o_kanban_record_title mt8" t-if="record.applicant_name.raw_value">
+                                                <field name="applicant_name"/>
+                                                <br/>
+                                            </b>
+                                            <div class="o_kanban_record_subtitle"
+                                                 invisible="context.get('search_default_job_position_id', False)">
+                                                <field name="job_position_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<field name="categ_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>-->
+                                    <t t-if="record.applicant_mobile.raw_value">
+                                        <i class="fa fa-mobile mr4" role="img" aria-label="Mobile" title="Mobile"/>
+                                        <field name="applicant_mobile" widget="phone"/>
+                                        <br/>
+                                    </t>
+                                    <div class="o_kanban_record_bottom mt4">
+                                        <div class="oe_kanban_bottom_left">
+                                            <div class="float-left mr4" groups="base.group_user">
+                                                <field name="priority" widget="priority"/>
+                                            </div>
+                                            <div class="o_kanban_inline_block mr8">
+                                                <field name="activity_ids" widget="kanban_activity"/>
+                                            </div>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <div class="o_kanban_state_with_padding ml-1 mr-2">
+                                                <field name="kanban_state" widget="kanban_state_selection"/>
+                                                <field name="legend_normal" invisible="1"/>
+                                                <field name="legend_blocked" invisible="1"/>
+                                                <field name="legend_done" invisible="1"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="oe_clear"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
             </field>
         </record>
 

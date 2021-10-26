@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _
+from odoo import models, fields, api, _, SUPERUSER_ID
 
 AVAILABLE_PRIORITIES = [
     ('0', 'Normal'),
@@ -24,12 +24,15 @@ class JobApplicant(models.Model):
         ('msc', 'MSc/MEng'),
         ('phd', 'PhD')], string='Highest degree',
         copy=False, default='bsc', required=True)
-    stage_id = fields.Char('Stage', tracking=True, store=True, readonly=False)
+    stage_id = fields.Many2one('ejobs.recruitment.stage', 'Stage', tracking=True, store=True, readonly=False,
+                               group_expand='_read_group_stage_ids')
     company_id = fields.Many2one('res.company', "Company", compute='_compute_company', store=True, tracking=True)
-    recruiter_id = fields.Many2one('res.users', string='Recruiter', compute='_compute_recruiter', readonly=False, tracking=True)
+    recruiter_id = fields.Many2one('res.users', string='Recruiter', compute='_compute_recruiter', readonly=False,
+                                   tracking=True)
     department_id = fields.Many2one('hr.department', "Department", compute='_compute_department', store=True,
                                     readonly=False, tracking=True)
     job_position_id = fields.Many2one('ejobs.positions', "Applied Job", tracking=True, required=True)
+    job_ids = fields.Many2many('ejobs.positions', string='Job Specific')
     date_open = fields.Datetime("Assigning date", readonly=True, index=True)
     application_date = fields.Datetime("Application Date", readonly=True, index=True, default=fields.Datetime.now())
     date_closed = fields.Datetime("Closing date", store=True, index=True)
@@ -48,6 +51,9 @@ class JobApplicant(models.Model):
         ('in', 'LinkedIn'),
         ('web', 'Website')], string='Found job via')
     description = fields.Text("Description", tracking=True)
+    legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked')
+    legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid')
+    legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing')
 
     @api.model
     def create(self, vals):
@@ -57,17 +63,26 @@ class JobApplicant(models.Model):
         res = super(JobApplicant, self).create(vals)
         return res
 
+    # compute department_id based on job_position_id
     @api.depends('job_position_id')
     def _compute_department(self):
         for applicant in self:
             applicant.department_id = applicant.job_position_id.department_id.id
 
+    # compute company_id based on job_position_id
     @api.depends('job_position_id')
     def _compute_company(self):
         for applicant in self:
             applicant.company_id = applicant.job_position_id.company_id.id
 
+    # compute recruiter_id based on job_position_id
     @api.depends('job_position_id')
     def _compute_recruiter(self):
         for applicant in self:
             applicant.recruiter_id = applicant.job_position_id.recruiter_id.id
+
+    # show all the stages in the kanban view although it is empty
+    @api.model
+    def _read_group_stage_ids(self, stages, domain, order):
+        stage_ids = self.env['ejobs.recruitment.stage'].search([])
+        return stage_ids
