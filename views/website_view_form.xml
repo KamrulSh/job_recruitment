@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="menu_application_form" model="website.menu">
+        <field name="name">Apply job</field>
+        <field name="url">/apply_job</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">55</field>
+    </record>
+
+    <template id="apply_job" name="Apply job">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <div class="container">
+                        <form role="form" action="/create/application" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="form-group">
+                                <br/>
+                                <label for="applicant_name" class="control-label">Name</label>
+                                <input type="text" name="applicant_name" t-att-value="applicant_name"
+                                       id="applicant_name" class="form-control" placeholder="e.g. Your name"
+                                       required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="applicant_mobile" class="control-label">Phone</label>
+                                <input type="text" name="applicant_mobile" t-att-value="applicant_mobile"
+                                       id="applicant_mobile" class="form-control" placeholder="e.g. 01xxxxxxxxx"
+                                       required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="applicant_email" class="control-label">Email</label>
+                                <input type="email" name="applicant_email" t-att-value="applicant_email"
+                                       id="applicant_email" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="applicant_degree" class="control-label">Degree</label>
+                                <select name="applicant_degree" id="applicant_degree" class="form-control">
+                                    <option value="bsc">BSc</option>
+                                    <option value="msc">MSc</option>
+                                    <option value="phd">PhD</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="job_position_id" class="control-label">Job Position</label>
+                                <select name="job_position_id" class="form-control link-style">
+                                    <t t-foreach='job_position_rec' t-as="job">
+                                        <option t-esc='job.name' t-att-value='job.id'/>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="salary_proposed" class="control-label">Proposed salary</label>
+                                <input type="number" name="salary_proposed" t-att-value="salary_proposed"
+                                       id="salary_proposed" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="availability" class="control-label">Available from</label>
+                                <input type="date" name="availability" t-att-value="availability" id="availability"
+                                       class="form-control" required="required"/>
+                            </div>
+                            <div class="clearfix oe_login_buttons">
+                                <button type="submit" class="btn btn-primary pull-left">Submit Application</button>
+                            </div>
+                            <br/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="user_thanks" model="website.page">
+        <field name="name">Thanks</field>
+        <field name="type">qweb</field>
+        <field name="url">/user-thanks</field>
+        <field name="website_published">True</field>
+        <field name="key">job_recruitment.user_thanks</field>
+        <field name="arch" type="xml">
+            <t name="Thanks" t-name="job_recruitment.user_thanks">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="container">
+                            <h1>Thanks!</h1>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="alert alert-success" role="status">The Application has been Submitted
+                                        successfully.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+
+</odoo>
