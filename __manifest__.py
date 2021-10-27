@@ -15,7 +15,7 @@
     'version': '0.1',
     'license': 'LGPL-3',
     'website': "http://www.yourcompany.com",
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'hr'],
     'data': [
         'security/ir.model.access.csv',
         'data/application_sequence.xml',
@@ -24,6 +24,7 @@
         'views/job_applicant_views.xml',
         'views/recruit_stage_views.xml',
         'views/tags_views.xml',
+        'views/department_views.xml',
         'reports/applicant_report.xml',
     ],
     'demo': [

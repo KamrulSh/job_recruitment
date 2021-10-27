@@ -33,6 +33,12 @@
             <field name="arch" type="xml">
                 <form string="Job Recruitment Form" class="o_applicant_form">
                     <header>
+                        <button string="Create Employee" name="create_employee_from_applicant" type="object"
+                                class="oe_highlight o_create_employee"
+                                attrs="{'invisible': [('active', '=', False)]}"/>
+<!--                        <button string="Refuse" name="archive_applicant" type="object"-->
+                        <!--                                attrs="{'invisible': [('active', '=', False)]}"/>-->
+
                         <!-- Show all stages in statusbar -->
                         <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"
                                attrs="{'invisible': [('active', '=', False)]}"/>
