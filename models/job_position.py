@@ -17,3 +17,5 @@ class JobPositions(models.Model):
     color = fields.Integer("Color Index")
     date_open = fields.Datetime("Job Assigning date", readonly=False, index=True)
     date_closed = fields.Datetime("Job Closing date", store=True, index=True)
+    view_applicant_ids = fields.One2many('ejobs.applicants', 'job_position_id', string="Applicants")
+    salary_proposed = fields.Float("Proposed Salary", tracking=True)

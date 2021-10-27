@@ -38,7 +38,6 @@ class JobApplicant(models.Model):
     job_ids = fields.Many2many('ejobs.positions', string='Job Specific')
     application_date = fields.Datetime("Application Date", readonly=True, index=True, default=fields.Datetime.now())
     priority = fields.Selection(AVAILABLE_PRIORITIES, "Priority", default='0')
-    salary_proposed = fields.Float("Proposed Salary", tracking=True)
     salary_expected = fields.Float("Expected Salary", tracking=True)
     availability = fields.Date("Availability", tracking=True, required=True)
     color = fields.Integer("Color Index", default=0)
