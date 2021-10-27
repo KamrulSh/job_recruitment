@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_applicant_card" model="ir.actions.report">
+        <field name="name">Applicant Card</field>
+        <field name="model">ejobs.applicants</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">job_recruitment.report_applicant_card</field>
+        <field name="report_file">job_recruitment.report_applicant_card</field>
+        <field name="print_report_name">'Applicant Card - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_ejobs_applicants"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_applicant_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 align="center">Applicant Report</h2>
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <table class="table table-condensed" style="border: 2px solid black !important;">
+                                    <tr>
+                                        <td width="100%">
+                                            <table>
+                                                <tr>
+                                                    <td colspan="6" class="text-center">
+                                                        <span t-field="o.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span>
+                                                            <strong>Name</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.applicant_name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span>
+                                                            <strong>Phone</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.applicant_mobile"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span>
+                                                            <strong>Email</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.applicant_email"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span>
+                                                            <strong>Job position</strong>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>:</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.job_position_id"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -24,6 +24,7 @@
         'views/job_applicant_views.xml',
         'views/recruit_stage_views.xml',
         'views/tags_views.xml',
+        'reports/applicant_report.xml',
     ],
     'demo': [
         # 'demo/demo.xml',
