@@ -17,6 +17,7 @@
     'website': "http://www.yourcompany.com",
     'depends': ['base', 'mail', 'hr', 'website'],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/application_sequence.xml',
         'views/all_munu_items.xml',
