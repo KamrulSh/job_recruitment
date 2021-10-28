@@ -33,12 +33,14 @@
         <menuitem id="job_positions"
                   name="Job positions"
                   parent="job_recruitment_root"
-                  action="job_positions_action"/>
+                  action="job_positions_action"
+                  groups="job_recruitment.group_recruitment_admin,job_recruitment.group_recruitment_manager"/>
 
         <menuitem id="job_applicants"
                   name="Job applicants"
                   parent="job_recruitment_root"
-                  action="job_applicants_action"/>
+                  action="job_applicants_action"
+                  groups="job_recruitment.group_recruitment_admin,job_recruitment.group_recruitment_manager"/>
 
     </data>
 </odoo>

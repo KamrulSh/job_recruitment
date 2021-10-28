@@ -26,3 +26,10 @@ class JobPositions(models.Model):
         for record in self:
             if record.salary_proposed <= 0:
                 raise ValidationError('Proposed salary must be greater than 0')
+
+    # check for date validation
+    @api.constrains('date_open', 'date_closed')
+    def _check_date_validation(self):
+        for record in self:
+            if record.date_closed < record.date_open:
+                raise ValidationError('Job opening date should not be less then Job closing date.')

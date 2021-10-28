@@ -84,7 +84,8 @@
         <menuitem
                 id="menu_job_recruitment_configuration"
                 name="Configuration"
-                parent="job_recruitment_root"/>
+                parent="job_recruitment_root"
+                groups="job_recruitment.group_recruitment_admin,job_recruitment.group_recruitment_manager"/>
 
         <menuitem
                 id="menu_job_recruitment_stage"
