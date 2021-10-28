@@ -17,3 +17,12 @@ class WebApplicant(http.Controller):
         # print("\nData Received.....", kw)
         request.env['ejobs.applicants'].sudo().create(kw)
         return request.render("job_recruitment.user_thanks", {})
+
+    # route for show all the job post information
+    @http.route('/all_jobs', type='http', auth='public', website=True)
+    def view_job_website(self, **kw):
+        all_jobs = request.env['ejobs.positions'].sudo().search([])
+        # print("\nData Received.....", patients)
+        return http.request.render('job_recruitment.view_jobs', {
+            'all_jobs': all_jobs
+        })

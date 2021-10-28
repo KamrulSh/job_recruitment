@@ -1,7 +1,7 @@
 from random import randint
 
-from odoo import models, fields, api, _, SUPERUSER_ID
-from odoo.exceptions import UserError, ValidationError
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 import re
 
 AVAILABLE_PRIORITIES = [
@@ -39,14 +39,14 @@ class JobApplicant(models.Model):
     job_ids = fields.Many2many('ejobs.positions', string='Job Specific')
     application_date = fields.Datetime("Application Date", readonly=True, index=True, default=fields.Datetime.now())
     priority = fields.Selection(AVAILABLE_PRIORITIES, "Priority", default='0')
-    salary_expected = fields.Float("Expected Salary", tracking=True)
+    salary_expected = fields.Float("Expected Salary", tracking=True, required=True)
     availability = fields.Date("Availability", tracking=True, required=True)
     color = fields.Integer("Color Index", default=0)
     kanban_state = fields.Selection([
         ('normal', 'In progress'),
         ('done', 'Ready for next stage'),
         ('blocked', 'Blocked')], string='Kanban State',
-        copy=False, default='normal', required=True)
+        copy=False, default='normal', required=True, tracking=True)
     medium_find = fields.Selection([
         ('fb', 'Facebook'),
         ('in', 'LinkedIn'),
@@ -57,6 +57,9 @@ class JobApplicant(models.Model):
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing')
     category_ids = fields.Many2many('ejobs.applicants.category', string="Tags")
     partner_id = fields.Many2one('res.partner', "Contact", copy=False)
+    attachment_cv = fields.Binary(string='Upload attachment', attachment=True)
+    attachment_name = fields.Char(string='Attachment name')
+    applicant_image = fields.Binary(string='Image', attachment=True)
 
     @api.constrains('applicant_email')
     def _check_email(self):
@@ -122,46 +125,12 @@ class JobApplicant(models.Model):
     #         date.date_open = date.job_position_id.date_open.id
     #         date.date_closed = date.job_position_id.date_closed.id
 
-    #  """ Create an hr.employee from the ejobs.applicants """
-    # This code has a bug
-    # It will not store employee in employee module
+    # changing the status
+    def action_status_potential(self):
+        self.kanban_state = 'done'
 
-    def create_employee_from_job_applicant(self):
-        employee = False
-        for applicant in self:
-            contact_name = False
-            if applicant.partner_id:
-                address_id = applicant.partner_id.address_get(['contact'])['contact']
-                contact_name = applicant.partner_id.display_name
-            else:
-                if not applicant.applicant_name:
-                    raise UserError(_('You must define a Contact Name for this applicant.'))
-                new_partner_id = self.env['res.partner'].create({
-                    'is_company': False,
-                    'type': 'private',
-                    'name': applicant.applicant_name,
-                    'email': applicant.applicant_email,
-                    'mobile': applicant.applicant_mobile
-                })
-                applicant.partner_id = new_partner_id
-                address_id = new_partner_id.address_get(['contact'])['contact']
-            if applicant.applicant_name or contact_name:
-                employee_data = {
-                    'default_name': applicant.applicant_name or contact_name,
-                    'default_job_id': applicant.job_position_id.id,
-                    'default_job_title': applicant.job_position_id.name,
-                    'address_home_id': address_id,
-                    'default_department_id': applicant.department_id.id or False,
-                    'default_address_id': applicant.company_id and applicant.company_id.partner_id and applicant.company_id.partner_id.id or False,
-                    'default_work_email': applicant.department_id and applicant.department_id.company_id and applicant.department_id.company_id.email or False,
-                    'default_work_phone': applicant.department_id.company_id.phone,
-                    'form_view_initial_mode': 'edit',
-                    'default_applicant_id': applicant.ids
-                }
-
-        dict_act_window = self.env['ir.actions.act_window']._for_xml_id('hr.open_view_employee_list')
-        dict_act_window['context'] = employee_data
-        return dict_act_window
+    def action_status_blocked(self):
+        self.kanban_state = 'blocked'
 
 
 # added category for tag name

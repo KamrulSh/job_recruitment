@@ -26,6 +26,7 @@
         'views/tags_views.xml',
         'views/department_views.xml',
         'views/website_view_form.xml',
+        'views/website_job_view.xml',
         'reports/applicant_report.xml',
     ],
     'demo': [

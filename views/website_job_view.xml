@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="menu_jobs_webview" model="website.menu">
+            <field name="name">Jobs List</field>
+            <field name="url">/all_jobs</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence">56</field>
+        </record>
+        <template id="view_jobs" name="Jobs">
+            <t t-call="website.layout">
+                <div class="container">
+                    <h3>Job Positions</h3>
+                    <div>
+                        <t t-foreach="all_jobs" t-as="job">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h1>
+                                        <t t-esc="job.name"/>
+                                    </h1>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">Department:
+                                        <t t-esc="job.department_id.name"/>
+                                    </p>
+                                    <p class="card-text">No. of vacancy:
+                                        <t t-esc="job.no_of_recruitment"/>
+                                    </p>
+                                    <p class="card-text">Proposed Salary:
+                                        <t t-esc="job.salary_proposed"/>
+                                    </p>
+                                    <p class="card-text">Job Closing date:
+                                        <t t-esc="job.date_closed"/>
+                                    </p>
+                                    <a href="/apply_job" class="btn btn-primary btn-lg active" role="button"
+                                       aria-pressed="true">
+                                        Apply here
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

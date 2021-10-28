@@ -32,11 +32,11 @@
             <field name="arch" type="xml">
                 <form string="Job Recruitment Form" class="o_applicant_form">
                     <header>
-                        <!--                        <button string="Create Employee" name="create_employee_from_job_applicant" type="object"-->
-                        <!--                                class="oe_highlight o_create_employee"-->
-                        <!--                                attrs="{'invisible': [('active', '=', False)]}"/>-->
-                        <!--                        <button string="Refuse" name="archive_applicant" type="object"-->
-                        <!--                                attrs="{'invisible': [('active', '=', False)]}"/>-->
+                        <button id="button_potential" name="action_status_potential" string="Potential"
+                                class="btn-success"
+                                type="object"/>
+                        <button id="button_refuse" name="action_status_blocked" string="Blocked" class="btn-danger"
+                                type="object"/>
                         <!-- Show all stages in statusbar -->
                         <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"
                                attrs="{'invisible': [('active', '=', False)]}"/>
@@ -61,8 +61,11 @@
                                 <field name="applicant_email" widget="email"/>
                                 <field name="applicant_mobile" widget="phone"/>
                                 <field name="applicant_degree"/>
+                                <field name="attachment_cv" filename="attachment_name"/>
+                                <field name="attachment_name" invisible="1"/>
                             </group>
                             <group>
+                                <field name="applicant_image" widget='image' class='oe_avatar'/>
                                 <field name="recruiter_id"/>
                                 <field name="priority" widget="priority"/>
                                 <field name="medium_find"/>
@@ -178,12 +181,44 @@
                                         </div>
 
                                     </div>
+                                    <div class="o_kanban_record_subtitle">
+                                        # Stage:
+                                        <field name="stage_id"/>
+                                    </div>
                                 </div>
                                 <div class="oe_clear"/>
                             </div>
                         </t>
                     </templates>
                 </kanban>
+            </field>
+        </record>
+
+        <!-- Applicants search view -->
+        <record id="job_applicants_view_search" model="ir.ui.view">
+            <field name="name">Applicants</field>
+            <field name="model">ejobs.applicants</field>
+            <field name="arch" type="xml">
+                <search string="Applicants">
+                    <field name="name"/>
+                    <field name="application_date" readonly="1"/>
+                    <field name="applicant_name"/>
+                    <field name="applicant_mobile"/>
+                    <field name="applicant_email"/>
+                    <field name="job_position_id"/>
+                    <field name="medium_find"/>
+                    <field name="salary_expected"/>
+                    <field name="applicant_degree"/>
+                    <field name="availability"/>
+                    <field name="department_id"/>
+                    <field name="stage_id"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Job position" name="job_position_id" context="{'group_by':'job_position_id'}"/>
+                        <filter string="State" name="kanban_state" context="{'group_by':'kanban_state'}"/>
+                        <filter string="Priority" name="priority" context="{'group_by':'priority'}"/>
+                    </group>
+                </search>
             </field>
         </record>
 
@@ -231,6 +266,28 @@
         <!--                </calendar>-->
         <!--            </field>-->
         <!--        </record>-->
+
+        <!-- action server for changing the status to confirmed -->
+        <record id="action_status_potential" model="ir.actions.server">
+            <field name="name">Potential</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_ejobs_applicants"/>
+            <field name="binding_model_id" ref="model_ejobs_applicants"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">records.action_status_potential()</field>
+        </record>
+
+        <!-- action server for changing the status to done -->
+        <record id="action_status_blocked" model="ir.actions.server">
+            <field name="name">Blocked</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_ejobs_applicants"/>
+            <field name="binding_model_id" ref="model_ejobs_applicants"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">records.action_status_blocked()</field>
+        </record>
 
     </data>
 </odoo>
