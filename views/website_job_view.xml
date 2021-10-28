@@ -32,6 +32,9 @@
                                     <p class="card-text">Job Closing date:
                                         <t t-esc="job.date_closed"/>
                                     </p>
+                                    <p class="card-text">Description:
+                                        <t t-esc="job.description"/>
+                                    </p>
                                     <a href="/apply_job" class="btn btn-primary btn-lg active" role="button"
                                        aria-pressed="true">
                                         Apply here

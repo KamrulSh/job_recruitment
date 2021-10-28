@@ -104,12 +104,21 @@
                                         <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
                                     </div>
                                     <div class="o_kanban_record_subtitle">
-                                         <ul>
+                                        <ul>
                                             <li>Department :
                                                 <field name="department_id"/>
                                             </li>
                                             <li>No. of position :
                                                 <field name="no_of_recruitment"/>
+                                            </li>
+                                            <li>Recruiter :
+                                                <field name="recruiter_id"/>
+                                            </li>
+                                            <li>Salary :
+                                                <field name="salary_proposed"/>
+                                            </li>
+                                            <li>Deadline :
+                                                <field name="date_closed"/>
                                             </li>
                                         </ul>
                                     </div>
