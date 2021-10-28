@@ -1,7 +1,8 @@
 from random import randint
 
 from odoo import models, fields, api, _, SUPERUSER_ID
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+import re
 
 AVAILABLE_PRIORITIES = [
     ('0', 'Normal'),
@@ -19,9 +20,9 @@ class JobApplicant(models.Model):
 
     name = fields.Char("Application ID", required=True, copy=False, readonly=True, default=lambda self: _('New'))
     active = fields.Boolean("Active", default=True)
-    applicant_name = fields.Char("Applicant's Name")
-    applicant_mobile = fields.Char("Mobile", size=32, store=True)
-    applicant_email = fields.Char("Email", size=128, help="Applicant email", store=True)
+    applicant_name = fields.Char("Applicant's Name", required=True)
+    applicant_mobile = fields.Char("Mobile", size=32, store=True, required=True)
+    applicant_email = fields.Char("Email", size=128, help="Applicant email", store=True, required=True)
     applicant_degree = fields.Selection([
         ('bsc', 'BSc'),
         ('msc', 'MSc/MEng'),
@@ -56,6 +57,20 @@ class JobApplicant(models.Model):
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing')
     category_ids = fields.Many2many('ejobs.applicants.category', string="Tags")
     partner_id = fields.Many2one('res.partner', "Contact", copy=False)
+
+    @api.constrains('applicant_email')
+    def _check_email(self):
+        for record in self:
+            valid_email = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
+                                   record.applicant_email)
+            if valid_email is None:
+                raise ValidationError('Please provide a valid Email')
+
+    @api.constrains('salary_expected')
+    def _check_salary_expected(self):
+        for record in self:
+            if record.salary_expected <= 0:
+                raise ValidationError('Expected salary must be greater than 0')
 
     @api.model
     def create(self, vals):
@@ -111,7 +126,7 @@ class JobApplicant(models.Model):
     # This code has a bug
     # It will not store employee in employee module
 
-    def create_employee_from_applicant(self):
+    def create_employee_from_job_applicant(self):
         employee = False
         for applicant in self:
             contact_name = False

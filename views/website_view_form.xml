@@ -50,9 +50,17 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="salary_proposed" class="control-label">Proposed salary</label>
-                                <input type="number" name="salary_proposed" t-att-value="salary_proposed"
-                                       id="salary_proposed" class="form-control"/>
+                                <label for="salary_expected" class="control-label">Expected salary</label>
+                                <input type="number" name="salary_expected" t-att-value="salary_expected"
+                                       id="salary_expected" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="medium_find" class="control-label">Found job via</label>
+                                <select name="medium_find" id="medium_find" class="form-control">
+                                    <option value="fb">Facebook</option>
+                                    <option value="in">LinkedIn</option>
+                                    <option value="web">Website</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="availability" class="control-label">Available from</label>

@@ -17,7 +17,6 @@
                     <field name="priority" widget="priority" optional="show"/>
                     <field name="medium_find" optional="hide"/>
                     <field name="salary_expected" optional="hide"/>
-                    <field name="salary_proposed" optional="hide"/>
                     <field name="applicant_degree" invisible="1"/>
                     <field name="availability" optional="hide"/>
                     <field name="department_id" readonly="1"/>
@@ -33,12 +32,11 @@
             <field name="arch" type="xml">
                 <form string="Job Recruitment Form" class="o_applicant_form">
                     <header>
-                        <button string="Create Employee" name="create_employee_from_applicant" type="object"
-                                class="oe_highlight o_create_employee"
-                                attrs="{'invisible': [('active', '=', False)]}"/>
-<!--                        <button string="Refuse" name="archive_applicant" type="object"-->
+                        <!--                        <button string="Create Employee" name="create_employee_from_job_applicant" type="object"-->
+                        <!--                                class="oe_highlight o_create_employee"-->
                         <!--                                attrs="{'invisible': [('active', '=', False)]}"/>-->
-
+                        <!--                        <button string="Refuse" name="archive_applicant" type="object"-->
+                        <!--                                attrs="{'invisible': [('active', '=', False)]}"/>-->
                         <!-- Show all stages in statusbar -->
                         <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"
                                attrs="{'invisible': [('active', '=', False)]}"/>
@@ -79,10 +77,6 @@
                                 <label for="salary_expected"/>
                                 <div class="o_row">
                                     <field name="salary_expected"/>
-                                </div>
-                                <label for="salary_proposed"/>
-                                <div class="o_row">
-                                    <field name="salary_proposed"/>
                                 </div>
                                 <field name="availability"/>
                             </group>
