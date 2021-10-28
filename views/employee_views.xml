@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="job_department_action" model="ir.actions.act_window">
-        <field name="name">Department</field>
+    <record id="job_employee_action" model="ir.actions.act_window">
+        <field name="name">Employees</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">hr.department</field>
+        <field name="res_model">hr.employee</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -13,10 +13,10 @@
         </field>
     </record>
 
-    <menuitem id="menu_all_department"
-              name="Departments"
+    <menuitem id="menu_all_employee"
+              name="Employees"
               parent="job_recruitment_root"
-              action="job_department_action"
+              action="job_employee_action"
               groups="job_recruitment.group_recruitment_admin,job_recruitment.group_recruitment_manager"/>
 
 </odoo>
