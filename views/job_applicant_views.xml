@@ -253,19 +253,19 @@
         </record>
 
         <!-- Applicants calender view -->
-        <!--        <record id="job_applicants_calendar_view" model="ir.ui.view">-->
-        <!--            <field name="name">Hr Applicants Calendar</field>-->
-        <!--            <field name="model">ejobs.applicants</field>-->
-        <!--            <field name="priority" eval="2"/>-->
-        <!--            <field name="arch" type="xml">-->
-        <!--                <calendar string="Applicants" date_start="application_date" date_stop="application_date"-->
-        <!--                      event_open_popup="true" mode="month" color="name" quick_add="False">-->
-        <!--                    <field name="applicant_name"/>-->
-        <!--                    <field name="job_position_id"/>-->
-        <!--                    <field name="priority" widget="priority"/>-->
-        <!--                </calendar>-->
-        <!--            </field>-->
-        <!--        </record>-->
+        <record id="job_applicants_calendar_view" model="ir.ui.view">
+            <field name="name">Hr Applicants Calendar</field>
+            <field name="model">ejobs.applicants</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+                <calendar string="Applicants" date_start="application_date" date_stop="availability"
+                          event_open_popup="true" mode="month" color="name" quick_add="False">
+                    <field name="applicant_name"/>
+                    <field name="job_position_id"/>
+                    <field name="priority" widget="priority"/>
+                </calendar>
+            </field>
+        </record>
 
         <!-- action server for changing the status to confirmed -->
         <record id="action_status_potential" model="ir.actions.server">
