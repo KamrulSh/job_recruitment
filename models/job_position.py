@@ -27,6 +27,12 @@ class JobPositions(models.Model):
             if record.salary_proposed <= 0:
                 raise ValidationError('Proposed salary must be greater than 0')
 
+    @api.constrains('no_of_recruitment')
+    def _check_no_of_recruitment(self):
+        for record in self:
+            if record.no_of_recruitment <= 0:
+                raise ValidationError('No of recruitment must be greater than 0')
+
     # check for date validation
     @api.constrains('date_open', 'date_closed')
     def _check_date_validation(self):
